@@ -9,6 +9,7 @@ import Sidebar from '../components/Sidebar'
 
 const LeadList = () => {
     const [data, setData] = useState([])
+    const [loading, setLoading] = useState(false)
     const [error, setError] = useState(false)
     const [filteredData, setFilteredData] = useState(null)
 
@@ -29,9 +30,13 @@ const LeadList = () => {
     // Get All Leads
     const getLeadsData = async () => {
         try {
+            setLoading(true)
             const res = await getLeads()
-            setData(res.data)
-            setFilteredData(res.data)
+            if(res) {
+                setData(res.data)
+                setFilteredData(res.data)
+                setLoading(false)
+            }
         } catch (error) {
             setError(error)
         }
@@ -62,9 +67,6 @@ const LeadList = () => {
     const getAllAgents = async() => {
         try {
             const response = await getSalesAgents()
-            if(response.error) {
-                throw response.error
-            }
             setAgents(response.data)
         } catch (error) {
             setAgentError(error.response.data.error)
@@ -248,11 +250,11 @@ const LeadList = () => {
                                     </tr>
                                 ))
                                 }
-                                {filteredData && filteredData.length === 0 && 
+                                {/* {filteredData && filteredData.length === 0 && 
                                     <tr style={{textAlign: "center"}}>
                                         <td colSpan={7}>No Data Found!</td>
                                     </tr>
-                                }
+                                } */}
                             </tbody>
 
                         </table>
@@ -261,9 +263,14 @@ const LeadList = () => {
                             <AddNewLead handleNewLeadScr={handleNewLeadScr} />
                         }
                     </>}
-                    {data.length === 0 && 
+                    {loading && !error && 
                         <div className='loader-div'>
                             <h3 className='loader'></h3>
+                        </div>
+                    }
+                    {error && 
+                        <div className='loader-div'>
+                            <h3 className='error-msg'>{error}</h3>
                         </div>
                     }
                 </div>

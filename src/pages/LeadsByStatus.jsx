@@ -9,6 +9,7 @@ const LeadsByStatus = () => {
     const {statusName} = useParams()
     
     const [data, setData] = useState([])
+    const [loading, setLoading] = useState(false)
     const [error, setError] = useState(false)
 
     const [salesAgents, setAgents] = useState([])
@@ -25,8 +26,12 @@ const LeadsByStatus = () => {
     // Get leads data
     const getLeadsData = async (status) => {
         try {
+            setLoading(true)
             const res = await getLeadByStatus(status)
-            setData(res.data)
+            if(res) {
+                setData(res.data)
+                setLoading(false)
+            }
         } catch (error) {
             setError(error.response.data.error)
         }
@@ -165,20 +170,25 @@ const LeadsByStatus = () => {
                                                 </tr>
                                             ))
                                         }
-                                        {updatedData && updatedData.length === 0 && 
+                                        {/* {updatedData && updatedData.length === 0 && 
                                             <tr style={{textAlign: "center"}}>
                                                 <td colSpan={7}>No Data Found!</td>
                                             </tr>
-                                        }
+                                        } */}
                                     </tbody>
 
                                 </table>
                             </div>
                         </>
                         }
-                        {data.length === 0 && 
+                        {loading && !error && 
                             <div className='loader-div'>
                                 <h3 className='loader'></h3>
+                            </div>
+                        }
+                        {error && 
+                            <div className='loader-div'>
+                                <h3 className='error-msg'>{error}</h3>
                             </div>
                         }
                 </div>

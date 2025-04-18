@@ -7,6 +7,7 @@ import AddNewLead from '../components/AddNewLead'
 
 const Home = () => {
     const [data, setData] = useState([])
+    const [loading, setLoading] = useState(false)
     const [error, setError] = useState(false)
     const [filteredData, setFilteredData] = useState(null)
 
@@ -15,8 +16,12 @@ const Home = () => {
 
     const getLeadsData = async () => {
         try {
+            setLoading(true)
             const res = await getLeads()
-            setData(res.data)
+            if(res) {
+                setData(res.data)
+                setLoading(false)
+            }
         } catch (error) {
             setError(error.response.data.error)
         }
@@ -90,9 +95,14 @@ const Home = () => {
                             }   
                         </>
                     }
-                    {data.length === 0 && 
+                    {loading && !error && 
                         <div className='loader-div'>
                             <h3 className='loader'></h3>
+                        </div>
+                    }
+                    {error && 
+                        <div className='loader-div'>
+                            <h3 className='error-msg'>{error}</h3>
                         </div>
                     }
 

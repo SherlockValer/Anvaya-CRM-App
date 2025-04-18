@@ -10,6 +10,7 @@ const LeadsBySalesAgent = () => {
     const {agentId} = useParams()
     
     const [data, setData] = useState([])
+    const [loading, setLoading] = useState(false)
     const [error, setError] = useState(false)
 
     const [salesAgent, setAgent] = useState(null)
@@ -26,8 +27,13 @@ const LeadsBySalesAgent = () => {
     // Get leads data
     const getLeadsData = async (agent) => {
         try {
+            setLoading(true)
             const res = await getLeadBySalesAgent(agent)
-            setData(res.data)
+            if(res) {
+                setData(res.data)
+                setLoading(false)
+            }
+
         } catch (error) {
             setError(error.response.data.error)
         }
@@ -90,7 +96,7 @@ const LeadsBySalesAgent = () => {
             <main>
                 <Sidebar />
                 <div className="content">
-                {data && data.length !== 0 && 
+                {data && data.length !==0 && 
                     <>
                         <h2 className="content-heading">Lead List by Sales Agent</h2>
                         {salesAgent && <h3>Sales Agent: {salesAgent.name}</h3>}
@@ -166,20 +172,25 @@ const LeadsBySalesAgent = () => {
                                             </tr>
                                         ))
                                     }
-                                    {updatedData && updatedData.length === 0 && 
+                                    {/* {updatedData && updatedData.length === 0 && 
                                         <tr style={{textAlign: "center"}}>
                                             <td colSpan={7}>No Data Found!</td>
                                         </tr>
-                                    }
+                                    } */}
                                 </tbody>
 
                             </table>
                         </div>
                     </>
                     }
-                    {data.length === 0 && 
+                    {loading && !error && 
                         <div className='loader-div'>
                             <h3 className='loader'></h3>
+                        </div>
+                    }
+                    {error && 
+                        <div className='loader-div'>
+                            <h3 className='error-msg'>{error}</h3>
                         </div>
                     }
                 </div>

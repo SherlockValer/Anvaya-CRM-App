@@ -630,6 +630,7 @@ td {
     height: 80vh;
     display: flex;
     align-items: center;
+    justify-content: center ;
 }
 
 /* https://css-loaders.com/bars/ */
@@ -653,3 +654,9 @@ td {
       60%{background-position:0%  50%, 50% 100%,100%   0%}
       80%{background-position:0%  50%, 50%  50%,100% 100%}
   }
+
+.error-msg {
+    font-style: italic;
+    color: rgb(189, 185, 185);
+
+}

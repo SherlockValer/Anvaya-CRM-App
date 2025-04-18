@@ -44,9 +44,14 @@ const LeadManagement = () => {
                         <CommentsSection id={leadIDObj.leadID} />
                     </>
                 }
-                {loading && 
+                {loading && !error && 
                     <div className='loader-div'>
                         <h3 className='loader'></h3>
+                    </div>
+                }
+                {error && 
+                    <div className='loader-div'>
+                        <h3 className='error-msg'>{error}</h3>
                     </div>
                 }
                 </div>

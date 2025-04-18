@@ -11,15 +11,20 @@ import Sidebar from "../components/Sidebar"
 
 const Reports = () => {
     const [data, setData] = useState([])
+    const [loading, setLoading] = useState(false)
     const [error, setError] = useState(false)
 
     // Get All Leads
     const getLeadsData = async () => {
         try {
+            setLoading(true)
             const res = await getLeads()
-            setData(res.data)
+            if(res) {
+                setData(res.data)
+                setLoading(false)
+            }
         } catch (error) {
-            setError(error)
+            setError(error.response.data.error)
         }
     }
     
@@ -49,9 +54,14 @@ const Reports = () => {
 
                         </>
                     }
-                    {data.length === 0 && 
+                    {loading && !error && 
                         <div className='loader-div'>
                             <h3 className='loader'></h3>
+                        </div>
+                    }
+                    {error && 
+                        <div className='loader-div'>
+                            <h3 className='error-msg'>{error}</h3>
                         </div>
                     }
                 </div>

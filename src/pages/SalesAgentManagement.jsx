@@ -6,6 +6,7 @@ import Sidebar from '../components/Sidebar'
 
 const SalesAgentManagement = () => {
     const [salesAgents, setAgents] = useState([])
+    const [agentLoading, setLoading] = useState(false)
     const [agentError, setAgentError] = useState(null)
 
     const [newAgentScr, setAgentScr] = useState(false)
@@ -13,8 +14,12 @@ const SalesAgentManagement = () => {
     // Get Sales Agents
     const getAllAgents = async() => {
         try {
+            setLoading(true)
             const response = await getSalesAgents()
-            setAgents(response.data)
+            if(response) {
+                setAgents(response.data)
+                setLoading(false)
+            }
         } catch (error) {
             setAgentError(error.response.data.error)
         }
@@ -58,11 +63,16 @@ const SalesAgentManagement = () => {
                                 <AddNewSalesAgent handleNewAgentScr={handleNewAgentScr}/>
                             }
                         </>}
-                    {salesAgents.length === 0 && 
-                        <div className='loader-div'>
-                            <h3 className='loader'></h3>
-                        </div>
-                    }
+                        {loading && !error && 
+                            <div className='loader-div'>
+                                <h3 className='loader'></h3>
+                            </div>
+                        }
+                        {error && 
+                            <div className='loader-div'>
+                                <h3 className='error-msg'>{error}</h3>
+                            </div>
+                        }
                 </div>
             </main>
         </>
