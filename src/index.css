@@ -1,0 +1,65 @@
+:root {
+
+
+    /* Main */
+    --primary : #FF6B6B;
+    --secondary: #FFE66D;
+    --background: #F7F9FA;
+    --text: #222831;
+    --accent: #4ECDC4;
+
+
+    --purple: #5D3FD3;
+    --muted-mint: #D0F0E0;
+    --warm-biege: #FDF1E6;
+    --green: #34A853;
+    --table: #34A853;
+
+    /* --primary : linear-gradient(135deg, #cc2b5e, #753a88);
+    --secondary: #e2e2deb6;
+    --background: #F7F9FA;
+    --text: #222831;
+    --accent: rgba(216, 17, 216, 0.39); */
+
+    /* --primary : #2F80ED;
+    --secondary: #56CCF2;
+    --background: #F4F6F8;
+    --text: #1F2933;
+    --accent: #27AE60; */
+
+    /* --primary : #3A3D98;
+    --secondary: #9B51E0;
+    --background: #F9FAFB;
+    --text: #212121;
+    --accent: #F2994A; */
+
+    /* --primary : #00B894;
+    --secondary: #FFEAA7;
+    --background: #FDFEFE;
+    --text: #2D3436;
+    --accent: #D63031; */
+
+    /* --primary : #4A90E2;
+    --secondary: #D1D8E0;
+    --background: #FFF;
+    --text: #2C3E50;
+    --accent: #7ED6DF; */
+
+    /* --primary : #4A90E2;
+    --secondary: #D1D8E0;
+    --background: #FFF;
+    --text: #2C3E50;
+    --accent: #7ED6DF; */
+
+
+    /* --primary: #008DDA ;
+    --secondary: #9ACBD0;
+    --background: #F7EEDD;
+    --text: #006A71;
+    --accent: #48A6A7; */
+
+
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+
