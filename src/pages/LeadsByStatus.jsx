@@ -170,11 +170,11 @@ const LeadsByStatus = () => {
                                                 </tr>
                                             ))
                                         }
-                                        {/* {updatedData && updatedData.length === 0 && 
+                                        {updatedData && updatedData.length === 0 && 
                                             <tr style={{textAlign: "center"}}>
                                                 <td colSpan={7}>No Data Found!</td>
                                             </tr>
-                                        } */}
+                                        }
                                     </tbody>
 
                                 </table>
