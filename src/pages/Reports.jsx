@@ -37,12 +37,23 @@ const Reports = () => {
             <main>
                 <Sidebar />
                 <div className="content">
-                    <h2 className="content-heading">Report Overview</h2>
-                    <div className="chart-flex">
-                        <TotalLeadsChart data={data} />
-                        <LeadsClosedChart data={data} />
-                        <LeadStatusDistributionChart data={data}/>
-                    </div>
+                    {data && data.length !== 0 && 
+                        <>
+
+                            <h2 className="content-heading">Report Overview</h2>
+                            <div className="chart-flex">
+                                <TotalLeadsChart data={data} />
+                                <LeadsClosedChart data={data} />
+                                <LeadStatusDistributionChart data={data}/>
+                            </div>
+
+                        </>
+                    }
+                    {data.length === 0 && 
+                        <div className='loader-div'>
+                            <h3 className='loader'></h3>
+                        </div>
+                    }
                 </div>
             </main>
         </>

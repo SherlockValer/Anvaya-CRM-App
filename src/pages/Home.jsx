@@ -69,23 +69,33 @@ const Home = () => {
                 </div>
 
                 <div className="content">
-                    <LeadCards data={filteredData || data} error={error} />
-                    <LeadStatus data={data} error={error}/>
+                    {data && data.length !== 0 && 
+                        <>
+                            <LeadCards data={filteredData || data} error={error} />
+                            <LeadStatus data={data} error={error}/>
 
-                    <p>Quick Filters:</p>
-                    <div className='quick-filters'>
-                        <button className='btn-accent' onClick={() => filterHandler('All')}>Latest</button>
-                        <button className='btn-accent' onClick={() => filterHandler('New')}>New</button>
-                        <button className='btn-accent' onClick={() => filterHandler('Contacted')}>Contacted</button>
-                        <button className='btn-accent' onClick={() => filterHandler('Qualified')}>Qualified</button>
-                        <button className='btn-accent' onClick={() => filterHandler('Proposal Sent')}>Proposal Sent</button>
-                        <button className='btn-accent' onClick={() => filterHandler('Closed')}>Closed</button>
-                    </div>
+                            <p>Quick Filters:</p>
+                            <div className='quick-filters'>
+                                <button className='btn-accent' onClick={() => filterHandler('All')}>Latest</button>
+                                <button className='btn-accent' onClick={() => filterHandler('New')}>New</button>
+                                <button className='btn-accent' onClick={() => filterHandler('Contacted')}>Contacted</button>
+                                <button className='btn-accent' onClick={() => filterHandler('Qualified')}>Qualified</button>
+                                <button className='btn-accent' onClick={() => filterHandler('Proposal Sent')}>Proposal Sent</button>
+                                <button className='btn-accent' onClick={() => filterHandler('Closed')}>Closed</button>
+                            </div>
 
-                    <button onClick={() => handleNewLeadScr()} className='addButton'> + Add New Lead</button>
-                    {newLeadScr &&
-                        <AddNewLead handleNewLeadScr={handleNewLeadScr}/>
+                            <button onClick={() => handleNewLeadScr()} className='addButton'> + Add New Lead</button>
+                            {newLeadScr &&
+                                <AddNewLead handleNewLeadScr={handleNewLeadScr}/>
+                            }   
+                        </>
                     }
+                    {data.length === 0 && 
+                        <div className='loader-div'>
+                            <h3 className='loader'></h3>
+                        </div>
+                    }
+
                 </div>
             </main>
         </>

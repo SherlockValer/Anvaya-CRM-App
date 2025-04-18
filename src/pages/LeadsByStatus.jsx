@@ -86,92 +86,101 @@ const LeadsByStatus = () => {
             <main>
                 <Sidebar />
                 <div className="content">
-                    <h2 className="content-heading">Lead List by Status</h2>
-                    <h3>Status: {statusName}</h3>
-                    <div className="filters">
-                        <label htmlFor="salesAgent">Sales Agent</label>
-                        <select name="salesAgent" onChange={(e) => setCurrAgent(e.target.value)} value={currAgent}>
-                            <option value="All">All</option>
-                            {salesAgents && 
-                                salesAgents.map(agent => (
-                                    <option 
-                                        key={agent._id} 
-                                        value={agent.name}
-                                    >{agent.name}</option>
-                                ))
-                            }
-                        </select>
+                    {data && data.length !== 0 && 
+                        <>
+                            <h2 className="content-heading">Lead List by Status</h2>
+                            <h3>Status: {statusName}</h3>
+                            <div className="filters">
+                                <label htmlFor="salesAgent">Sales Agent</label>
+                                <select name="salesAgent" onChange={(e) => setCurrAgent(e.target.value)} value={currAgent}>
+                                    <option value="All">All</option>
+                                    {salesAgents && 
+                                        salesAgents.map(agent => (
+                                            <option 
+                                                key={agent._id} 
+                                                value={agent.name}
+                                            >{agent.name}</option>
+                                        ))
+                                    }
+                                </select>
 
-                        <label htmlFor="priority">Priority</label>
-                        <select name="priority" onChange={(e) => setCurrentPriority(e.target.value)}>
-                            <option value="All">All</option>
-                            <option value="High">High</option>
-                            <option value="Medium">Medium</option>
-                            <option value="Low">Low</option>
-                        </select>
-                    </div>
-                    <div>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Name</th>
-                                    <th>Source</th>
-                                    <th>Sales Agent</th>
-                                    <th>Priority</th>
-                                    <th>Time to Close
-                                        <i onClick={() => setTimeSort(sort => !sort)} className="material-icons sort-icon">sort</i>
-                                        {timeSort && 
-                                            <div className="priority-sort">
-                                                <p>Sort By:</p>
-                                                <label>
-                                                    <input 
-                                                        onChange={(e) => handleTimeSort(e)} 
-                                                        type="radio" 
-                                                        name="sort" 
-                                                        value="HTL" 
-                                                        checked={currTimeToClose === "HTL"}
-                                                    /> 
-                                                    High to Low
-                                                </label>
-                                                <label>
-                                                    <input 
-                                                        onChange={(e) => handleTimeSort(e)} 
-                                                        type="radio" 
-                                                        name="sort" 
-                                                        value="LTH" 
-                                                        checked={currTimeToClose === "LTH"}
-                                                    /> 
-                                                    Low to High
-                                                </label>
-                                                <button onClick={() => handleResetTime()}>reset</button>
-                                            </div>
-                                        }
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {updatedData.length !==0 && 
-                                    updatedData.map((lead,index) => (
-                                        <tr key={lead._id}>
-                                            <td>{index + 1}</td>
-                                            <td><Link to={`/leads/${lead._id}`}>{lead.name}</Link></td>
-                                            <td>{lead.source}</td>
-                                            <td><Link to={`/agent/${lead.salesAgent._id}`}>{lead.salesAgent.name}</Link></td>
-                                            <td>{lead.priority}</td>
-                                            <td>{lead.timeToClose}</td>
+                                <label htmlFor="priority">Priority</label>
+                                <select name="priority" onChange={(e) => setCurrentPriority(e.target.value)}>
+                                    <option value="All">All</option>
+                                    <option value="High">High</option>
+                                    <option value="Medium">Medium</option>
+                                    <option value="Low">Low</option>
+                                </select>
+                            </div>
+                            <div>
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Name</th>
+                                            <th>Source</th>
+                                            <th>Sales Agent</th>
+                                            <th>Priority</th>
+                                            <th>Time to Close
+                                                <i onClick={() => setTimeSort(sort => !sort)} className="material-icons sort-icon">sort</i>
+                                                {timeSort && 
+                                                    <div className="priority-sort">
+                                                        <p>Sort By:</p>
+                                                        <label>
+                                                            <input 
+                                                                onChange={(e) => handleTimeSort(e)} 
+                                                                type="radio" 
+                                                                name="sort" 
+                                                                value="HTL" 
+                                                                checked={currTimeToClose === "HTL"}
+                                                            /> 
+                                                            High to Low
+                                                        </label>
+                                                        <label>
+                                                            <input 
+                                                                onChange={(e) => handleTimeSort(e)} 
+                                                                type="radio" 
+                                                                name="sort" 
+                                                                value="LTH" 
+                                                                checked={currTimeToClose === "LTH"}
+                                                            /> 
+                                                            Low to High
+                                                        </label>
+                                                        <button onClick={() => handleResetTime()}>reset</button>
+                                                    </div>
+                                                }
+                                            </th>
                                         </tr>
-                                    ))
-                                }
-                                {updatedData && updatedData.length === 0 && 
-                                    <tr style={{textAlign: "center"}}>
-                                        <td colSpan={7}>No Data Found!</td>
-                                    </tr>
-                                }
-                            </tbody>
+                                    </thead>
+                                    <tbody>
+                                        {updatedData.length !==0 && 
+                                            updatedData.map((lead,index) => (
+                                                <tr key={lead._id}>
+                                                    <td>{index + 1}</td>
+                                                    <td><Link to={`/leads/${lead._id}`}>{lead.name}</Link></td>
+                                                    <td>{lead.source}</td>
+                                                    <td><Link to={`/agent/${lead.salesAgent._id}`}>{lead.salesAgent.name}</Link></td>
+                                                    <td>{lead.priority}</td>
+                                                    <td>{lead.timeToClose}</td>
+                                                </tr>
+                                            ))
+                                        }
+                                        {updatedData && updatedData.length === 0 && 
+                                            <tr style={{textAlign: "center"}}>
+                                                <td colSpan={7}>No Data Found!</td>
+                                            </tr>
+                                        }
+                                    </tbody>
 
-                        </table>
-                    </div>
+                                </table>
+                            </div>
+                        </>
+                        }
+                        {data.length === 0 && 
+                            <div className='loader-div'>
+                                <h3 className='loader'></h3>
+                            </div>
+                        }
                 </div>
             </main>
         </>

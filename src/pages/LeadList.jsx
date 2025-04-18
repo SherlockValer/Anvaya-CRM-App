@@ -141,124 +141,133 @@ const LeadList = () => {
             <main>
                 <Sidebar />
                 <div className="content">
-                    <h2 className="content-heading">Lead Overview</h2>
-                    <LeadOverviewCards data={data}/>
-                    <div className="filters">
-                        <label htmlFor="status">Status</label>
-                        <select name="status" onChange={(e) => statusFilterHandler(e.target.value)} value={currStatus}>
-                            <option value="All">All</option>
-                            <option value="New">New</option>
-                            <option value="Contacted">Contacted</option>
-                            <option value="Qualified">Qualified</option>
-                            <option value="Proposal Sent">Proposal Sent</option>
-                            <option value="Closed">Closed</option>
-                        </select>
-                        <label htmlFor="salesAgent">Sales Agent</label>
-                        <select name="salesAgent" onChange={(e) => agentFilterHandler(e.target.value)} value={currAgent}>
-                            <option value="All">All</option>
-                            {salesAgents && 
-                                salesAgents.map(agent => (
-                                    <option key={agent._id} value={agent.name}>{agent.name}</option>
+                {data && data.length !== 0 && 
+                    <>
+                        <h2 className="content-heading">Lead Overview</h2>
+                        <LeadOverviewCards data={data}/>
+                        <div className="filters">
+                            <label htmlFor="status">Status</label>
+                            <select name="status" onChange={(e) => statusFilterHandler(e.target.value)} value={currStatus}>
+                                <option value="All">All</option>
+                                <option value="New">New</option>
+                                <option value="Contacted">Contacted</option>
+                                <option value="Qualified">Qualified</option>
+                                <option value="Proposal Sent">Proposal Sent</option>
+                                <option value="Closed">Closed</option>
+                            </select>
+                            <label htmlFor="salesAgent">Sales Agent</label>
+                            <select name="salesAgent" onChange={(e) => agentFilterHandler(e.target.value)} value={currAgent}>
+                                <option value="All">All</option>
+                                {salesAgents && 
+                                    salesAgents.map(agent => (
+                                        <option key={agent._id} value={agent.name}>{agent.name}</option>
+                                    ))
+                                }
+                            </select>
+                        </div>
+
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Name</th>
+                                    <th>Source</th>
+                                    <th>Status</th>
+                                    <th>Sales Agent</th>
+                                    <th>Priority 
+                                        <i onClick={() => setPrioritySort(sort => !sort)} className="material-icons sort-icon">sort</i>
+                                        {prioritySort && 
+                                            <div className="priority-sort">
+                                                <p>Sort By:</p>
+                                                <label>
+                                                    <input 
+                                                        onChange={(e) => handlePrioritySort(e.target.value)} 
+                                                        type="radio" 
+                                                        name="prioritySort" 
+                                                        value="HTL" 
+                                                        checked={currPrioritySort === "HTL"}
+                                                    /> 
+                                                    High to Low
+                                                </label>
+                                                <label>
+                                                    <input 
+                                                        onChange={(e) => handlePrioritySort(e.target.value)} 
+                                                        type="radio" 
+                                                        name="prioritySort" 
+                                                        value="LTH" 
+                                                        checked={currPrioritySort === "LTH"}
+                                                    /> 
+                                                    Low to High
+                                                </label>
+                                                <button onClick={() => handleResetPriority()}>reset</button>
+                                            </div>
+                                        }
+                                    </th>
+                                    <th>Time to Close
+                                    <i onClick={() => setTimeSort(sort => !sort)} className="material-icons sort-icon">sort</i>
+                                        {timeSort && 
+                                            <div className="priority-sort">
+                                                <p>Sort By:</p>
+                                                <label>
+                                                    <input 
+                                                        onChange={(e) => handleTimeSort(e.target.value)} 
+                                                        type="radio" 
+                                                        name="timeSort" 
+                                                        value="HTL" 
+                                                        checked={currTimeSort === "HTL"}
+                                                    /> 
+                                                    High to Low
+                                                </label>
+                                                <label>
+                                                    <input 
+                                                        onChange={(e) => handleTimeSort(e.target.value)} 
+                                                        type="radio" 
+                                                        name="timeSort" 
+                                                        value="LTH" 
+                                                        checked={currTimeSort === "LTH"}
+                                                    /> 
+                                                    Low to High
+                                                </label>
+                                                <button onClick={() => handleResetTime()}>reset</button>
+                                            </div>
+                                        }
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {filteredData && 
+                                filteredData.map((lead,index) => (
+                                    <tr key={lead._id}>
+                                        <td>{index + 1}</td>
+                                        <td><Link to={`/leads/${lead._id}`}>{lead.name}</Link></td>
+                                        <td>{lead.source}</td>
+                                        <td><Link to={`/status/${lead.status}`}>{lead.status}</Link></td>
+                                        <td><Link to={`/agent/${lead.salesAgent._id}`}>{lead.salesAgent.name}</Link></td>
+                                        <td>{lead.priority}</td>
+                                        <td>{lead.timeToClose}</td>
+                                    </tr>
                                 ))
-                            }
-                        </select>
-                    </div>
+                                }
+                                {filteredData && filteredData.length === 0 && 
+                                    <tr style={{textAlign: "center"}}>
+                                        <td colSpan={7}>No Data Found!</td>
+                                    </tr>
+                                }
+                            </tbody>
 
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Name</th>
-                                <th>Source</th>
-                                <th>Status</th>
-                                <th>Sales Agent</th>
-                                <th>Priority 
-                                    <i onClick={() => setPrioritySort(sort => !sort)} className="material-icons sort-icon">sort</i>
-                                    {prioritySort && 
-                                        <div className="priority-sort">
-                                            <p>Sort By:</p>
-                                            <label>
-                                                <input 
-                                                    onChange={(e) => handlePrioritySort(e.target.value)} 
-                                                    type="radio" 
-                                                    name="prioritySort" 
-                                                    value="HTL" 
-                                                    checked={currPrioritySort === "HTL"}
-                                                /> 
-                                                High to Low
-                                            </label>
-                                            <label>
-                                                <input 
-                                                    onChange={(e) => handlePrioritySort(e.target.value)} 
-                                                    type="radio" 
-                                                    name="prioritySort" 
-                                                    value="LTH" 
-                                                    checked={currPrioritySort === "LTH"}
-                                                /> 
-                                                Low to High
-                                            </label>
-                                            <button onClick={() => handleResetPriority()}>reset</button>
-                                        </div>
-                                    }
-                                </th>
-                                <th>Time to Close
-                                <i onClick={() => setTimeSort(sort => !sort)} className="material-icons sort-icon">sort</i>
-                                    {timeSort && 
-                                        <div className="priority-sort">
-                                            <p>Sort By:</p>
-                                            <label>
-                                                <input 
-                                                    onChange={(e) => handleTimeSort(e.target.value)} 
-                                                    type="radio" 
-                                                    name="timeSort" 
-                                                    value="HTL" 
-                                                    checked={currTimeSort === "HTL"}
-                                                /> 
-                                                High to Low
-                                            </label>
-                                            <label>
-                                                <input 
-                                                    onChange={(e) => handleTimeSort(e.target.value)} 
-                                                    type="radio" 
-                                                    name="timeSort" 
-                                                    value="LTH" 
-                                                    checked={currTimeSort === "LTH"}
-                                                /> 
-                                                Low to High
-                                            </label>
-                                            <button onClick={() => handleResetTime()}>reset</button>
-                                        </div>
-                                    }
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {filteredData && 
-                            filteredData.map((lead,index) => (
-                                <tr key={lead._id}>
-                                    <td>{index + 1}</td>
-                                    <td><Link to={`/leads/${lead._id}`}>{lead.name}</Link></td>
-                                    <td>{lead.source}</td>
-                                    <td><Link to={`/status/${lead.status}`}>{lead.status}</Link></td>
-                                    <td><Link to={`/agent/${lead.salesAgent._id}`}>{lead.salesAgent.name}</Link></td>
-                                    <td>{lead.priority}</td>
-                                    <td>{lead.timeToClose}</td>
-                                </tr>
-                            ))
-                            }
-                            {filteredData && filteredData.length === 0 && 
-                                <tr style={{textAlign: "center"}}>
-                                    <td colSpan={7}>No Data Found!</td>
-                                </tr>
-                            }
-                        </tbody>
-
-                    </table>
-                    <button onClick={() => setNewLeadScr(true)} className="addButton">+ Add New Lead</button>
-                    {newLeadScr &&
-                        <AddNewLead handleNewLeadScr={handleNewLeadScr} />
+                        </table>
+                        <button onClick={() => setNewLeadScr(true)} className="addButton">+ Add New Lead</button>
+                        {newLeadScr &&
+                            <AddNewLead handleNewLeadScr={handleNewLeadScr} />
+                        }
+                    </>}
+                    {data.length === 0 && 
+                        <div className='loader-div'>
+                            <h3 className='loader'></h3>
+                        </div>
                     }
                 </div>
+
             </main>
         </>
     )
