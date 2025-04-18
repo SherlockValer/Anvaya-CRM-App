@@ -63,12 +63,12 @@ const SalesAgentManagement = () => {
                                 <AddNewSalesAgent handleNewAgentScr={handleNewAgentScr}/>
                             }
                         </>}
-                        {loading && !error && 
+                        {agentLoading && !agentError && 
                             <div className='loader-div'>
                                 <h3 className='loader'></h3>
                             </div>
                         }
-                        {error && 
+                        {agentError && 
                             <div className='loader-div'>
                                 <h3 className='error-msg'>{error}</h3>
                             </div>
