@@ -49,13 +49,6 @@ const LeadList = () => {
     // Filters
     const statusFilterHandler = (filter) => {
         setCurrStatus(filter)
-        if(filter !== 'All') {
-            const filteredData = data.filter(lead => lead.status === filter)
-            setFilteredData(filteredData)
-        } else {
-            setFilteredData(data)
-        }
-
     }
 
     const handleNewLeadScr = () => {
@@ -79,58 +72,59 @@ const LeadList = () => {
 
     const agentFilterHandler = (filter) => {
         setCurrAgent(filter)
-        if(filter !== "All") {
-            const filteredData = data.filter(lead => lead.salesAgent.name === filter)
-            setFilteredData(filteredData)
-        } else {
-            setFilteredData(data)
-        }
     }
 
     // Sort 
     const handlePrioritySort = (sort) => {
-        const highPriorityLeads = filteredData.filter(lead => lead.priority === 'High')
-        const mediumPriorityLeads = filteredData.filter(lead => lead.priority === 'Medium')
-        const lowPriorityLeads = filteredData.filter(lead => lead.priority === 'Low')
-        if(sort === "HTL") {
-            const sortedData = [...highPriorityLeads, ...mediumPriorityLeads, ...lowPriorityLeads]
-            setFilteredData(sortedData)
-        } else if (sort === "LTH") {
-            const sortedData = [...lowPriorityLeads, ...mediumPriorityLeads, ...highPriorityLeads]
-            setFilteredData(sortedData)
-        }
         setPrioritySort(false)
         setSort(sort)
     }
 
     const handleResetPriority = () => {
         setSort("")
-        setFilteredData(data)
-        setCurrStatus('All')
-        setCurrAgent('All')
         setPrioritySort(false)
-
     }
 
     const handleTimeSort = (sort) => {
-        if(sort === "HTL") {
-            const sortData = [...filteredData]
-            sortData.sort((a,b) => b.timeToClose - a.timeToClose)
-            setFilteredData(sortData)
-        } else if(sort === "LTH") {
-            const sortData = [...filteredData]
-            sortData.sort((a,b) => a.timeToClose - b.timeToClose)
-            setFilteredData(sortData)
-        }
         setCurrTimeSort(sort)
         setTimeSort(false)
     }
 
+    useEffect(() => {
+        // Status Filter
+        const filteredByStatus = currStatus === "All" ? data : data.filter(lead => lead.status === currStatus)
+        // Sales Agent Filter
+        const filteredByAgent = currAgent === "All" ? filteredByStatus : filteredByStatus.filter(lead => lead.salesAgent.name === currAgent)
+
+        // Priority Sort
+        const prioritySortData = []
+        const highPriorityLeads = filteredByAgent.filter(lead => lead.priority === 'High')
+        const mediumPriorityLeads = filteredByAgent.filter(lead => lead.priority === 'Medium')
+        const lowPriorityLeads = filteredByAgent.filter(lead => lead.priority === 'Low')
+        if(currPrioritySort === "HTL") {
+            const sortedData = [...highPriorityLeads, ...mediumPriorityLeads, ...lowPriorityLeads]
+            prioritySortData.push(...sortedData)
+        } else if (currPrioritySort === "LTH") {
+            const sortedData = [...lowPriorityLeads, ...mediumPriorityLeads, ...highPriorityLeads]
+            prioritySortData.push(...sortedData)
+        } else {
+            prioritySortData.push(...filteredByAgent)
+        }
+
+        // Time to Close Sort
+        const timeSortData = [...prioritySortData]
+        if(currTimeSort === "HTL") {
+            timeSortData.sort((a,b) => b.timeToClose - a.timeToClose)
+        } else if(currTimeSort === "LTH") {
+            timeSortData.sort((a,b) => a.timeToClose - b.timeToClose)
+        } 
+        setFilteredData(timeSortData)
+
+    }, [data, currStatus, currAgent, currPrioritySort, currTimeSort])
+
     const handleResetTime = () => {
         setCurrTimeSort('')
-        setFilteredData(data)
         setTimeSort(false)
-        setCurrStatus('All')
     }
 
 
@@ -281,3 +275,40 @@ const LeadList = () => {
 }
 
 export default LeadList
+
+//* Legacy Code
+
+// if(filter !== 'All') {
+//     const filteredData = data.filter(lead => lead.status === filter)
+//     setFilteredData(filteredData)
+// } else {
+//     setFilteredData(data)
+// }
+
+// if(filter !== "All") {
+//     const filteredData = data.filter(lead => lead.salesAgent.name === filter)
+//     setFilteredData(filteredData)
+// } else {
+//     setFilteredData(data)
+// }
+
+// const highPriorityLeads = filteredData.filter(lead => lead.priority === 'High')
+// const mediumPriorityLeads = filteredData.filter(lead => lead.priority === 'Medium')
+// const lowPriorityLeads = filteredData.filter(lead => lead.priority === 'Low')
+// if(sort === "HTL") {
+//     const sortedData = [...highPriorityLeads, ...mediumPriorityLeads, ...lowPriorityLeads]
+//     setFilteredData(sortedData)
+// } else if (sort === "LTH") {
+//     const sortedData = [...lowPriorityLeads, ...mediumPriorityLeads, ...highPriorityLeads]
+//     setFilteredData(sortedData)
+// }
+
+// if(sort === "HTL") {
+//     const sortData = [...filteredData]
+//     sortData.sort((a,b) => b.timeToClose - a.timeToClose)
+//     setFilteredData(sortData)
+// } else if(sort === "LTH") {
+//     const sortData = [...filteredData]
+//     sortData.sort((a,b) => a.timeToClose - b.timeToClose)
+//     setFilteredData(sortData)
+// }
